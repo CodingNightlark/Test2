@@ -3,42 +3,47 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        // Ask user for subject
         System.out.print("Enter the subject name: ");
         String subjectName = scanner.nextLine();
+        
+        System.out.print("Enter your target hours for " + subjectName + ": ");
+        double targetHours = Double.parseDouble(scanner.nextLine());
 
-        // Create Subject object
-        Subject subject = new Subject(subjectName, 0, 0); // You can extend this to load real data
+    Subject subject = new Subject(subjectName, 0, 0);
+    GoalTracker tracker = new GoalTracker(subject, targetHours);
 
-        // Start study session
-        System.out.println("Press Y to start the timer...");
-        String input = scanner.nextLine();
+    System.out.println("Press Y to start the timer...");
+    String input = scanner.nextLine();
 
-        if (input.equalsIgnoreCase("Y")) {
-            StudySession session = new StudySession(subjectName);
-            session.startSession();
+    if (input.equalsIgnoreCase("Y")) {
+     StudySession session = new StudySession(subjectName);
+     session.startSession();
 
-            System.out.println("Timer started. Press Enter to stop.");
-            scanner.nextLine(); // Wait for Enter key
+    Timer timer = session.getTimer();
+     LiveTimerDisplay display = new LiveTimerDisplay(timer);
+    display.start();
 
-            session.endSession();
+    System.out.println("\nTimer started. Press Enter to stop.");
+    scanner.nextLine();
 
-            long millis = session.getSessionDuration();
-            double hours = millis / (1000.0 * 60 * 60); // fractional hours
+    session.endSession();
+    display.stopDisplay();
 
-            // Update subject
-            subject.updateTotalHours(hours);
+    long millis = session.getSessionDuration();
+    double hours = millis / (1000.0 * 60 * 60);
 
-            System.out.println("Timer stopped.");
-            System.out.printf("Elapsed time: %.2f hours%n", hours);
+    tracker.updateGoal(hours);
 
-            System.out.println("\nSubject Summary");
-            subject.displaySubjectInfo();
-        } else {
-            System.out.println("Timer not started.");
-        }
+    System.out.println("\nTimer stopped.");
+    System.out.printf("Elapsed time: %.2f hours%n", hours);
 
-        scanner.close();
+    System.out.println("\n--- Subject Summary ---");
+    subject.displaySubjectInfo();
+
+    System.out.println("\n--- Goal Progress ---");
+    tracker.displayProgress();
+}
     }
 }
+
+

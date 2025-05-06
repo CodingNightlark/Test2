@@ -13,4 +13,9 @@ public class Timer {
     public long getElapsedTime() {
         return endTime - startTime;
     }
+
+    public long getStartTime() {
+        return this.startTime;
+    }
+    
 }

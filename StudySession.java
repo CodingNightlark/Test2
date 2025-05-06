@@ -15,6 +15,10 @@ public class StudySession {
         timer.stop();
     }
 
+    public Timer getTimer() {
+        return this.timer;
+    }    
+
     public long getSessionDuration() {
         return timer.getElapsedTime();
     }
