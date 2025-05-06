@@ -1,11 +1,11 @@
-package myStudy;
+package mystudy;
 
 import java.time.LocalDate;
 
 public class testScores {
-   private LocalDate date;
+    private LocalDate date;
     private double hoursStudiedBefore;
-    private double score; // percentage
+    private double score;
 
     public testScores(LocalDate date, double hoursStudiedBefore, double score) {
         this.date = date;
@@ -21,9 +21,3 @@ public class testScores {
         return score;
     }
 }
-
-
-
-
-// Make a timer, study tracker, set goals, grade tracker, and study planner in Java.
-// The timer will track the time spent studying.

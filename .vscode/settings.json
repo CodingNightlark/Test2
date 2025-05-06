@@ -1,4 +1,7 @@
 {
-    "java.debug.settings.onBuildFailureProceed": true,
-    "maven.view": "flat"
-}
+    "java.project.sourcePaths": [
+      "src"
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic"
+  }
+  

@@ -1,4 +1,4 @@
-package myStudy;
+package mystudy;
 
 public class Timer {
     private long startTime;
@@ -19,5 +19,4 @@ public class Timer {
     public long getStartTime() {
         return this.startTime;
     }
-    
 }

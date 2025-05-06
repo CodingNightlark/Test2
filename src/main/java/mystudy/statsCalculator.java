@@ -1,4 +1,5 @@
-package myStudy;
+package mystudy;
+
 import java.util.List;
 
 public class statsCalculator {
@@ -30,5 +31,3 @@ public class statsCalculator {
         return "No significant correlation";
     }
 }
-
-
