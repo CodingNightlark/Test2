@@ -1,14 +1,10 @@
 public class Subject {
     private String name;
-    private String description;
-    private int credits;
-    private int totalHours;
+    private double totalHours;
     private int hoursPerWeek;
 
-    public Subject(String name, String description, int credits, int totalHours, int hoursPerWeek) {
+    public Subject(String name, double totalHours, int hoursPerWeek) {
         this.name = name;
-        this.description = description;
-        this.credits = credits;
         this.totalHours = totalHours;
         this.hoursPerWeek = hoursPerWeek;
     }
@@ -17,41 +13,33 @@ public class Subject {
         return name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public int getCredits() {
-        return credits;
-    }
-
-    public int getTotalHours() {
+    public double getTotalHours() {
         return totalHours;
     }
+
     public int getHoursPerWeek() {
         return hoursPerWeek;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public void setCredits(int credits) {
-        this.credits = credits;
-    }
-    public void setTotalHours(int totalHours) {
+
+    public void setTotalHours(double totalHours) {
         this.totalHours = totalHours;
     }
+
     public void setHoursPerWeek(int hoursPerWeek) {
         this.hoursPerWeek = hoursPerWeek;
     }
+
+    public void updateTotalHours(double hours) {
+        this.totalHours += hours;
+    }
+
     public void displaySubjectInfo() {
         System.out.println("Subject Name: " + name);
-        System.out.println("Description: " + description);
-        System.out.println("Credits: " + credits);
-        System.out.println("Total Hours: " + totalHours);
+        System.out.printf("Total Hours: %.2f%n", totalHours);
         System.out.println("Hours per Week: " + hoursPerWeek);
     }
-    
 }
