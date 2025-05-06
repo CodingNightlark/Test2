@@ -28,4 +28,4 @@ public class GoalTracker {
         System.out.printf("  Remaining: %.2f hours%n", getHoursRemaining());
         System.out.printf("  Completion: %.1f%%%n", getPercentComplete());
     }
-}
+} 

@@ -1,22 +1,30 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "type": "java",
-        "name": "Main",
-        "request": "launch",
-        "mainClass": "mystudy.Main",
-        "projectName": "study-tracker"
-      },
-      {
-        "type": "java",
-        "name": "Launch Main",
-        "request": "launch",
-        "mainClass": "Main",
-        "classPaths": [
-          "bin"
-        ]
-      }
-    ]
-  }
-  
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "testUI",
+      "request": "launch",
+      "mainClass": "mystudy.testUI",
+      "projectName": "study-tracker"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "mystudy.Main",
+      "projectName": "study-tracker",
+      "vmArgs": "--module-path PATH_TO_JAVAFX_SDK/lib --add-modules javafx.controls,javafx.fxml"
+    },
+    {
+      "type": "java",
+      "name": "Launch Main",
+      "request": "launch",
+      "mainClass": "Main",
+      "classPaths": [ 
+        "bin"
+      ],
+      "vmArgs": "--module-path /Users/chloecunningham/javafx-sdk-21.0.7/lib --add-modules javafx.controls,javafx.fxml"
+    }
+  ]
+}
