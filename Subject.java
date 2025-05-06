@@ -1,7 +1,12 @@
+package myStudy;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Subject {
     private String name;
     private double totalHours;
     private int hoursPerWeek;
+    private List<testScores> testScores = new ArrayList<>();
 
     public Subject(String name, double totalHours, int hoursPerWeek) {
         this.name = name;
@@ -42,4 +47,15 @@ public class Subject {
         System.out.printf("Total Hours: %.2f%n", totalHours);
         System.out.println("Hours per Week: " + hoursPerWeek);
     }
+
+    
+
+    public void addTestScore(testScores score) {
+    testScores.add(score);
+    }
+
+    public List<testScores> getTestScores() {
+    return testScores;
+    }   
+
 }

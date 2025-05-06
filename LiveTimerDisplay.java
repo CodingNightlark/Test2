@@ -1,4 +1,4 @@
-
+package myStudy;
     public class LiveTimerDisplay extends Thread {
         private final Timer timer;
         private volatile boolean running = true;
