@@ -1,7 +1,7 @@
 package mystudy;
 
 public class GoalTracker {
-    private Subject subject;
+    private Subject subject; 
     private double targetHours;
 
     public GoalTracker(Subject subject, double targetHours) {

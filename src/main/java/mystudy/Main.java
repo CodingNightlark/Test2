@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class Main { 
     /*java \
   --module-path /Users/chloecunningham/javafx-sdk-21.0.7/lib \
   --add-modules javafx.controls,javafx.fxml \
@@ -15,7 +15,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in); 
         List<StudySession> sessions = new ArrayList<>();
         Subject subject;
-        GoalTracker tracker;
+        GoalTracker tracker; 
 
         // Prompt once for subject and goal
         System.out.print("Enter the subject name: ");
@@ -31,12 +31,12 @@ public class Main {
         do {
             System.out.println("Press Y to start a new study session, or any other key to exit.");
             continueInput = scanner.nextLine();
-            if (continueInput.equalsIgnoreCase("Y")) {
+            if (continueInput.equalsIgnoreCase("Y")) { 
                 // Create and start session
                 StudySession session = new StudySession(subjectName);
                 session.startSession();
 
-                // Live timer display
+                // Live timer display 
                 Timer timer = session.getTimer();
                 LiveTimerDisplay display = new LiveTimerDisplay(timer);
                 display.start();

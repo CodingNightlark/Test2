@@ -1,5 +1,5 @@
 package mystudy;
-// built by chatGPT to try to test if javafx works, replace with your own code
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -21,8 +21,7 @@ public class testUI extends Application {
     private Button initButton, startButton, stopButton;
     private Label timerLabel;
     private TextArea logArea;
-    private final ObservableList<Subject> subjects =
-        FXCollections.observableArrayList();  
+    private final ObservableList<Subject> subjects = FXCollections.observableArrayList();
 
     private Subject subject;
     private GoalTracker tracker;
@@ -32,39 +31,49 @@ public class testUI extends Application {
 
     @Override
     public void start(Stage stage) {
+        // Subject input
         subjectField = new TextField();
         subjectField.setPromptText("Subject Name");
+        subjectField.getStyleClass().add("input-field");
+
         targetField = new TextField();
         targetField.setPromptText("Target Hours");
+        targetField.getStyleClass().add("input-field");
 
         initButton = new Button("Initialize Tracker");
+        initButton.getStyleClass().add("button");
         initButton.setOnAction(e -> initializeTracker());
 
+        // Session controls
         startButton = new Button("Start Session");
         stopButton  = new Button("Stop Session");
+        startButton.getStyleClass().add("button");
+        stopButton.getStyleClass().add("button");
         startButton.setDisable(true);
         stopButton.setDisable(true);
-
         startButton.setOnAction(e -> startSession());
         stopButton.setOnAction(e -> stopSession());
 
         timerLabel = new Label("00:00:00");
+        timerLabel.getStyleClass().add("timer-label");
 
         logArea = new TextArea();
         logArea.setPrefRowCount(10);
         logArea.setEditable(false);
+        logArea.getStyleClass().add("text-area");
 
-        VBox root = new VBox(10,
-            new HBox(5, subjectField, targetField, initButton),
-            new HBox(5, startButton, stopButton, timerLabel),
-            new Label("Session Log:"),
-            logArea
-        );
-        root.setPadding(new Insets(15));
+        // Layout
+        HBox inputBox = new HBox(10, subjectField, targetField, initButton);
+        HBox sessionBox = new HBox(10, startButton, stopButton, timerLabel);
+        VBox root = new VBox(15, inputBox, sessionBox, new Label("Session Log:"), logArea);
+        root.setPadding(new Insets(20));
 
-        Scene scene = new Scene(root, 600, 400);
+        // Scene & stylesheet
+        Scene scene = new Scene(root, 640, 480);
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+
         stage.setScene(scene);
-        stage.setTitle("Study Tracker UI");
+        stage.setTitle("Study Tracker");
         stage.show();
     }
 
@@ -79,14 +88,14 @@ public class testUI extends Application {
         }
         subject = new Subject(name, 0, 0);
         tracker = new GoalTracker(subject, target);
-        log("Initialized subject: " + name + " (Target: " + target + " hrs)");
+        log("Initialized: " + name + " (Target: " + target + " hrs)");
         subjectField.setDisable(true);
         targetField.setDisable(true);
         initButton.setDisable(true);
         startButton.setDisable(false);
     }
 
-    private void startSession() { 
+    private void startSession() {
         currentSession = new StudySession(subject.getName());
         currentSession.startSession();
         startButton.setDisable(true);
@@ -99,7 +108,7 @@ public class testUI extends Application {
         currentSession.endSession();
         stopTimer();
         long millis = currentSession.getSessionDuration();
-        double hrs = millis / (1000.0 * 60 * 60);
+        double hrs = millis / 3600000.0;
         tracker.updateGoal(hrs);
         sessions.add(currentSession);
 
@@ -107,8 +116,7 @@ public class testUI extends Application {
         log(String.format("Total studied: %.2f hrs | Remaining: %.2f hrs (%.1f%%)",
             subject.getTotalHours(),
             tracker.getHoursRemaining(),
-            tracker.getPercentComplete()
-        ));
+            tracker.getPercentComplete()));
         startButton.setDisable(false);
         stopButton.setDisable(true);
     }
@@ -126,19 +134,14 @@ public class testUI extends Application {
     }
 
     private void updateTimer() {
-        // calculate “live” elapsed time
-        long now     = System.currentTimeMillis();
-        long start   = currentSession.getTimer().getStartTime();
+        long now = System.currentTimeMillis();
+        long start = currentSession.getTimer().getStartTime();
         long elapsed = now - start;
-    
-        long hours   = elapsed / 3_600_000;
-        long minutes = (elapsed % 3_600_000) / 60_000;
-        long secs    = (elapsed % 60_000) / 1000;
-    
+        long hours = elapsed / 3600000;
+        long minutes = (elapsed % 3600000) / 60000;
+        long secs = (elapsed % 60000) / 1000;
         timerLabel.setText(String.format("%02d:%02d:%02d", hours, minutes, secs));
     }
-    
-    
 
     private void log(String message) {
         logArea.appendText(message + "\n");
@@ -152,5 +155,5 @@ public class testUI extends Application {
         launch(args);
     }
 }
-    
+
  
