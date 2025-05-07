@@ -1,5 +1,5 @@
 // src/main/java/storage/Storage.java
-package storage;
+package mystudy;
 
 import mystudy.Subject;
 import com.google.gson.Gson;
@@ -11,7 +11,7 @@ public class Storage {
     private static final Path FILE = Path.of(
         System.getProperty("user.home"), ".study-tracker", "data.json");
     private static final Gson GSON = new Gson();
-
+ 
     public static List<Subject> load() {
         try {
             if (!Files.exists(FILE)) return new ArrayList<>();

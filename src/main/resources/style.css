@@ -3,7 +3,7 @@
 /* Root pane */
 .root {
     -fx-font-family: "Segoe UI", sans-serif;
-    -fx-background-color: #4B0082; /* Deep indigo background */
+    -fx-background-color: #c57afa; /* Deep indigo background */
     -fx-padding: 20;
 }
 
@@ -18,7 +18,7 @@
 /* Buttons */
 .button {
     -fx-background-radius: 8;
-    -fx-background-color: linear-gradient(#7B1FA2, #4A0072);
+    -fx-background-color: linear-gradient(#bb3ff0, #ff747b);
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-padding: 8 16;

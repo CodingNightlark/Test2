@@ -1,4 +1,8 @@
+mystudy/testUI$1.class
+mystudy/Storage$1.class
+mystudy/GoalTracker.class
 mystudy/StudySession.class
+mystudy/Storage.class
 mystudy/Timer.class
 mystudy/Main.class
 mystudy/LiveTimerDisplay.class
@@ -6,4 +10,3 @@ mystudy/statsCalculator.class
 mystudy/testScores.class
 mystudy/Subject.class
 mystudy/testUI.class
-mystudy/GoalTracker.class

@@ -5,22 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main { 
-    /*java \
-  --module-path /Users/chloecunningham/javafx-sdk-21.0.7/lib \
-  --add-modules javafx.controls,javafx.fxml \
-  -cp target/classes \
-  mystudy.testUI
+    /*mvn clean compile exec:java  
+
   */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in); 
         List<StudySession> sessions = new ArrayList<>();
         Subject subject;
-        GoalTracker tracker; 
+        GoalTracker tracker;  
 
         // Prompt once for subject and goal
         System.out.print("Enter the subject name: ");
-        String subjectName = scanner.nextLine();
-
+        String subjectName = scanner.nextLine(); 
+ 
         System.out.print("Enter your target hours for " + subjectName + ": ");
         double targetHours = Double.parseDouble(scanner.nextLine());
 
@@ -31,10 +28,10 @@ public class Main {
         do {
             System.out.println("Press Y to start a new study session, or any other key to exit.");
             continueInput = scanner.nextLine();
-            if (continueInput.equalsIgnoreCase("Y")) { 
+            if (continueInput.equalsIgnoreCase("Y")) {  
                 // Create and start session
                 StudySession session = new StudySession(subjectName);
-                session.startSession();
+                session.startSession(); 
 
                 // Live timer display 
                 Timer timer = session.getTimer();
@@ -44,15 +41,15 @@ public class Main {
                 System.out.println("\nTimer started. Press Enter to stop.");
                 scanner.nextLine();
 
-                session.endSession();
-                display.stopDisplay();
+                session.endSession(); 
+                display.stopDisplay(); 
 
                 long millis = session.getSessionDuration();
                 double hours = millis / (1000.0 * 60 * 60);
 
                 // Update goal and log session
                 tracker.updateGoal(hours);
-                sessions.add(session);
+                sessions.add(session); 
 
                 System.out.println("\nTimer stopped.");
                 System.out.printf("Elapsed time: %.2f hours%n", hours);
@@ -71,7 +68,7 @@ public class Main {
         for (int i = 0; i < sessions.size(); i++) {
             StudySession s = sessions.get(i);
             long millis = s.getSessionDuration();
-            double hrs = millis / (1000.0 * 60 * 60);
+            double hrs = millis / (1000.0 * 60 * 60); 
             System.out.printf("Session %d: %.2f hours%n", i + 1, hrs);
         }
 

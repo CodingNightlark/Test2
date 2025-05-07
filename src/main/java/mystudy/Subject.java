@@ -11,6 +11,14 @@ public class Subject {
         this.hoursPerWeek = hoursPerWeek;
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+            "%s — Total: %.2f hrs, Weekly Target: %d hrs",
+            name, totalHours, hoursPerWeek
+        );
+    }
+    
     public String getName() {
         return name;
     }
@@ -28,8 +36,6 @@ public class Subject {
     }
 
     public void displaySubjectInfo() {
-        System.out.println("Subject Name: " + name);
-        System.out.printf("Total Hours: %.2f%n", totalHours);
-        System.out.println("Hours per Week: " + hoursPerWeek);
+        System.out.println(toString());
     }
 }

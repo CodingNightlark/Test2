@@ -13,7 +13,7 @@ public class StudySession {
     public void startSession() {
         timer.start();
     }
-
+ 
     public void endSession() {
         timer.stop();
     }
@@ -24,5 +24,8 @@ public class StudySession {
 
     public long getSessionDuration() {
         return timer.getElapsedTime();
+    }
+    public String getSubject() {
+        return subject;
     }
 }

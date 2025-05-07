@@ -4,45 +4,59 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import mystudy.Storage;
+
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.*;
 
 public class testUI extends Application {
-    private TextField subjectField;
-    private TextField targetField;
-    private Button initButton, startButton, stopButton;
+    private static final Path SESSIONS_FILE = Path.of(
+            System.getProperty("user.home"), ".study-tracker", "sessions.json");
+    private static final Gson GSON = new Gson();
+
+    // UI controls
+    private ComboBox<Subject> subjectCombo;
+    private Button addSubjectButton;
+    private Button startButton;
+    private Button stopButton;
     private Label timerLabel;
     private TextArea logArea;
-    private final ObservableList<Subject> subjects = FXCollections.observableArrayList();
 
+    // Core model
     private Subject subject;
     private GoalTracker tracker;
     private StudySession currentSession;
     private Timeline timeline;
+
+    // Data
+    private List<Subject> subjects;
     private List<StudySession> sessions = new ArrayList<>();
 
     @Override
     public void start(Stage stage) {
-        // Subject input
-        subjectField = new TextField();
-        subjectField.setPromptText("Subject Name");
-        subjectField.getStyleClass().add("input-field");
+        // Top: subject selector + add button
+        subjects = Storage.load();   
+        subjectCombo = new ComboBox<>(FXCollections.observableArrayList(subjects));
+        subjectCombo.setPromptText("Select subject");
+        subjectCombo.setOnAction(e -> onSubjectSelected());
 
-        targetField = new TextField();
-        targetField.setPromptText("Target Hours");
-        targetField.getStyleClass().add("input-field");
+        addSubjectButton = new Button("+");
+        addSubjectButton.getStyleClass().add("button");
+        addSubjectButton.setOnAction(e -> addSubject());
 
-        initButton = new Button("Initialize Tracker");
-        initButton.getStyleClass().add("button");
-        initButton.setOnAction(e -> initializeTracker());
+        HBox topRow = new HBox(10, subjectCombo, addSubjectButton);
 
         // Session controls
         startButton = new Button("Start Session");
@@ -57,66 +71,109 @@ public class testUI extends Application {
         timerLabel = new Label("00:00:00");
         timerLabel.getStyleClass().add("timer-label");
 
+        HBox controlRow = new HBox(10, startButton, stopButton, timerLabel);
+
+        // Log area
         logArea = new TextArea();
         logArea.setPrefRowCount(10);
         logArea.setEditable(false);
         logArea.getStyleClass().add("text-area");
 
-        // Layout
-        HBox inputBox = new HBox(10, subjectField, targetField, initButton);
-        HBox sessionBox = new HBox(10, startButton, stopButton, timerLabel);
-        VBox root = new VBox(15, inputBox, sessionBox, new Label("Session Log:"), logArea);
+        VBox root = new VBox(15, 
+                topRow,
+                controlRow,
+                new Label("Session Log:"),
+                logArea
+        );
         root.setPadding(new Insets(20));
 
-        // Scene & stylesheet
-        Scene scene = new Scene(root, 640, 480);
-        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        // Load past sessions
+        loadSessions();
 
-        stage.setScene(scene);
+        // Save on exit
+        stage.setOnCloseRequest((WindowEvent e) -> {
+            Storage.save(subjects);
+            saveSessions();
+        });
+
+        // Scene & CSS
+        Scene scene = new Scene(root, 640, 480);
+        scene.getStylesheets().add(
+                getClass().getResource("/style.css").toExternalForm()
+        );
+
         stage.setTitle("Study Tracker");
+        stage.setScene(scene);
         stage.show();
     }
 
-    private void initializeTracker() {
-        String name = subjectField.getText().trim();
-        double target;
-        try {
-            target = Double.parseDouble(targetField.getText().trim());
-        } catch (NumberFormatException ex) {
-            alert("Invalid target hours");
-            return;
-        }
-        subject = new Subject(name, 0, 0);
-        tracker = new GoalTracker(subject, target);
-        log("Initialized: " + name + " (Target: " + target + " hrs)");
-        subjectField.setDisable(true);
-        targetField.setDisable(true);
-        initButton.setDisable(true);
+    private void onSubjectSelected() {
+        subject = subjectCombo.getValue();
+        tracker = new GoalTracker(subject, subject.getHoursPerWeek());
+
+        logArea.clear();
+        log("Loaded: " + subject);
+        sessions.stream()
+                .filter(s -> s.getSubject().equals(subject.getName()))
+                .forEach(s -> {
+                    double hrs = s.getSessionDuration() / 3_600_000.0;
+                    log("Past session: " + String.format("%.2f hrs", hrs));
+                });
+
         startButton.setDisable(false);
+        stopButton.setDisable(true);
+    }
+
+    private void addSubject() {
+        TextInputDialog nameDialog = new TextInputDialog();
+        nameDialog.setTitle("New Subject");
+        nameDialog.setHeaderText("Add a new study subject");
+        nameDialog.setContentText("Subject name:");
+        Optional<String> nameRes = nameDialog.showAndWait();
+        nameRes.ifPresent(name -> {
+            TextInputDialog targetDialog = new TextInputDialog();
+            targetDialog.setTitle("Target Hours");
+            targetDialog.setHeaderText("Set weekly target for " + name);
+            targetDialog.setContentText("Target hours:");
+            Optional<String> targetRes = targetDialog.showAndWait();
+            targetRes.ifPresent(tstr -> {
+                try {
+                    int t = Integer.parseInt(tstr.trim());
+                    Subject newSub = new Subject(name, 0.0, t);
+                    subjects.add(newSub);
+                    subjectCombo.getItems().add(newSub);
+                    subjectCombo.getSelectionModel().select(newSub);
+                    Storage.save(subjects);
+                } catch (NumberFormatException ex) {
+                    alert("Invalid number for target hours.");
+                }
+            });
+        });
     }
 
     private void startSession() {
+        if (subject == null) return;
         currentSession = new StudySession(subject.getName());
         currentSession.startSession();
         startButton.setDisable(true);
         stopButton.setDisable(false);
         startTimer();
-        log("Session started...");
+        log("Session started for " + subject.getName());
     }
 
     private void stopSession() {
         currentSession.endSession();
         stopTimer();
-        long millis = currentSession.getSessionDuration();
-        double hrs = millis / 3600000.0;
+        double hrs = currentSession.getSessionDuration() / 3_600_000.0;
+        subject.updateTotalHours(hrs);
         tracker.updateGoal(hrs);
-        sessions.add(currentSession);
 
-        log(String.format("Session stopped: %.2f hrs", hrs));
-        log(String.format("Total studied: %.2f hrs | Remaining: %.2f hrs (%.1f%%)",
-            subject.getTotalHours(),
-            tracker.getHoursRemaining(),
-            tracker.getPercentComplete()));
+        log("Session stopped: " + String.format("%.2f hrs", hrs));
+        log("Updated: " + subject);
+
+        sessions.add(currentSession);
+        saveSessions();
+
         startButton.setDisable(false);
         stopButton.setDisable(true);
     }
@@ -137,10 +194,32 @@ public class testUI extends Application {
         long now = System.currentTimeMillis();
         long start = currentSession.getTimer().getStartTime();
         long elapsed = now - start;
-        long hours = elapsed / 3600000;
-        long minutes = (elapsed % 3600000) / 60000;
-        long secs = (elapsed % 60000) / 1000;
-        timerLabel.setText(String.format("%02d:%02d:%02d", hours, minutes, secs));
+        long h = elapsed / 3_600_000;
+        long m = (elapsed % 3_600_000) / 60_000;
+        long s = (elapsed % 60_000) / 1000;
+        timerLabel.setText(String.format("%02d:%02d:%02d", h, m, s));
+    }
+
+    private void loadSessions() {
+        try {
+            if (Files.exists(SESSIONS_FILE)) {
+                String json = Files.readString(SESSIONS_FILE);
+                sessions = GSON.fromJson(json,
+                        new TypeToken<List<StudySession>>() {}.getType());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveSessions() {
+        try {
+            Files.createDirectories(SESSIONS_FILE.getParent());
+            String json = GSON.toJson(sessions);
+            Files.writeString(SESSIONS_FILE, json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void log(String message) {
@@ -155,5 +234,3 @@ public class testUI extends Application {
         launch(args);
     }
 }
-
- 
