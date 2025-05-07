@@ -1,0 +1,40 @@
+/* ---------- Light theme (themes/light.css) ---------- */
+
+/* Root pane */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #f9f9fb;          /* soft off-white */
+    -fx-padding: 20;
+}
+
+/* Input fields */
+.input-field {
+    -fx-background-radius: 6;
+    -fx-background-color: #FFFFFF;
+    -fx-prompt-text-fill: #9ea2a8;          /* subtle hint text */
+    -fx-font-size: 14px;
+}
+
+/* Buttons */
+.button {
+    -fx-background-radius: 8;
+    -fx-background-color: linear-gradient(#4c9ef9, #377de6); /* light blue → royal */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16;
+}
+
+/* Timer label */
+.timer-label {
+    -fx-text-fill: #495057;  /* dark grey */
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Text-area log */
+.text-area {
+    -fx-control-inner-background: #FFFFFF;
+    -fx-background-radius: 6;
+    -fx-font-family: "Consolas", monospace;
+    -fx-font-size: 13px;
+}

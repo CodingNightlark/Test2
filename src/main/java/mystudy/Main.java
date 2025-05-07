@@ -2,18 +2,18 @@ package mystudy;
 
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List; 
 
-public class Main { 
+public class Main {   
     /*mvn clean compile exec:java  
 
-  */
+  */ 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in); 
         List<StudySession> sessions = new ArrayList<>();
         Subject subject;
         GoalTracker tracker;  
-
+      
         // Prompt once for subject and goal
         System.out.print("Enter the subject name: ");
         String subjectName = scanner.nextLine(); 

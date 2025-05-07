@@ -4,6 +4,7 @@ mystudy/GoalTracker.class
 mystudy/StudySession.class
 mystudy/Storage.class
 mystudy/Timer.class
+mystudy/Theme.class
 mystudy/Main.class
 mystudy/LiveTimerDisplay.class
 mystudy/statsCalculator.class

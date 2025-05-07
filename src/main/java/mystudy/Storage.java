@@ -21,7 +21,7 @@ public class Storage {
             e.printStackTrace();
             return new ArrayList<>();
         }
-    } 
+    }  
 
     public static void save(List<Subject> subjects) {
         try {

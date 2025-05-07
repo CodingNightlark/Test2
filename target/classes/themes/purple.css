@@ -8,7 +8,7 @@
 }
 
 /* Input fields */
-.input-field {
+.input-field { 
     -fx-background-radius: 6;
     -fx-background-color: #FFFFFF;
     -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
