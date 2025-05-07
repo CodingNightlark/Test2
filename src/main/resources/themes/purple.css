@@ -1,18 +1,7 @@
-/* style.css */
-
 /* Root pane */
 .root {
     -fx-font-family: "Segoe UI", sans-serif;
-    -fx-background-color: #c57afa; /* Deep indigo background */
-    -fx-padding: 20;
-}
-
-/* Input fields */
-.input-field { 
-    -fx-background-radius: 6;
-    -fx-background-color: #FFFFFF;
-    -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
-    -fx-font-size: 14px;
+    -fx-background-color: #c57afa;
 }
 
 /* Buttons */
@@ -31,10 +20,17 @@
     -fx-font-weight: bold;
 }
 
-/* Text area log */
-.text-area {
-    -fx-control-inner-background: #FFFFFF;
+/* ListView cells for session log */
+.list-view {
+    -fx-background-color: transparent;
     -fx-background-radius: 6;
-    -fx-font-family: "Consolas", monospace;
-    -fx-font-size: 13px;
+}
+.list-cell {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-padding: 8 12 8 12;
+}
+.list-cell:filled:selected, .list-cell:filled:hover {
+    -fx-background-color: #f0f0f0;
 }

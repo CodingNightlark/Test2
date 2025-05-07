@@ -10,8 +10,8 @@
 /* Input fields */
 .input-field {
     -fx-background-radius: 6;
-    -fx-background-color: #232323;
-    -fx-prompt-text-fill: #9ea2a8;          /* subtle hint text */
+    -fx-background-color: #3f3f3f;
+    -fx-prompt-text-fill: #878787;          /* subtle hint text */
     -fx-font-size: 14px;
 }
 
@@ -19,7 +19,7 @@
 .button {
     -fx-background-radius: 8;
     -fx-background-color: linear-gradient(#000000, #000000); /* light blue → royal */
-    -fx-text-fill: white;
+    -fx-text-fill: rgb(255, 255, 255);
     -fx-font-size: 14px;
     -fx-padding: 8 16;
 }
@@ -33,7 +33,7 @@
 
 /* Text-area log */
 .text-area {
-    -fx-control-inner-background: #FFFFFF;
+    -fx-control-inner-background: #434343;
     -fx-background-radius: 6;
     -fx-font-family: "Consolas", monospace;
     -fx-font-size: 13px;
