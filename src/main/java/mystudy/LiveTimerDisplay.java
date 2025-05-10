@@ -13,7 +13,7 @@ public class LiveTimerDisplay extends Thread {
     }
 
     @Override
-    public void run() {
+    public void run() { 
         while (running) {
             long elapsedMillis = System.currentTimeMillis() - timer.getStartTime();
             long seconds = (elapsedMillis / 1000) % 60;

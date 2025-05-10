@@ -12,7 +12,7 @@ public class StudySession {
     private String notes;
 
     public StudySession(String subject) {
-        this.subject = subject;
+        this.subject = subject; 
         this.timer = new Timer();
     }
 
@@ -32,7 +32,7 @@ public class StudySession {
         return timer.getElapsedTime();
     }
     public String getSubject() {
-        return subject;
+        return subject; 
     }
 
     public String getStartTimeFormatted() {
@@ -44,5 +44,9 @@ public class StudySession {
         );
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return dt.format(fmt);
+    }
+
+    public long getStartTime () {
+        return timer.getStartTime();
     }
 }

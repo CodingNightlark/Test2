@@ -1,13 +1,13 @@
-package mystudy;
+/*package mystudy;
 
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;  
 
 public class Main {   
-    /*mvn clean compile exec:java  
-
-  */     
+    mvn clean compile exec:java  
+ 
+       
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in); 
         List<StudySession> sessions = new ArrayList<>(); 
@@ -17,13 +17,13 @@ public class Main {
         // Prompt once for subject and goal
         System.out.print("Enter the subject name: ");
         String subjectName = scanner.nextLine();  
- 
+  
         System.out.print("Enter your target hours for " + subjectName + ": ");
         double targetHours = Double.parseDouble(scanner.nextLine());
  
         subject = new Subject(subjectName, 0, 0); 
         tracker = new GoalTracker(subject, targetHours);
-
+ 
         String continueInput;
         do { 
             System.out.println("Press Y to start a new study session, or any other key to exit.");
@@ -77,4 +77,4 @@ public class Main {
     }
 
     
-}
+ */

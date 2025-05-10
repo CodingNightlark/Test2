@@ -1,40 +1,51 @@
-/* ---------- Light theme (themes/light.css) ---------- */
-
-/* Root pane */
 .root {
     -fx-font-family: "Segoe UI", sans-serif;
-    -fx-background-color: #202020;          /* soft off-white */
-    -fx-padding: 20;
+    -fx-background-color: #202020;
+    -fx-text-fill: #FFFFFF;
 }
 
-/* Input fields */
-.input-field {
-    -fx-background-radius: 6;
-    -fx-background-color: #3f3f3f;
-    -fx-prompt-text-fill: #878787;          /* subtle hint text */
-    -fx-font-size: 14px;
-}
-
-/* Buttons */
-.button {
+.card {
+    -fx-background-color: #2D2D2D;
     -fx-background-radius: 8;
-    -fx-background-color: linear-gradient(#000000, #000000); /* light blue → royal */
-    -fx-text-fill: rgb(255, 255, 255);
-    -fx-font-size: 14px;
-    -fx-padding: 8 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0.1, 2, 2);
+    -fx-padding: 15;
 }
 
-/* Timer label */
+.fab {
+    -fx-font-size: 24px;
+    -fx-min-width: 64px;
+    -fx-min-height: 64px;
+    -fx-background-radius: 32px;
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0.1, 2, 2);
+}
+
 .timer-label {
-    -fx-text-fill: #495057;  /* dark grey */
-    -fx-font-size: 18px;
+    -fx-font-size: 64px;
     -fx-font-weight: bold;
+    -fx-text-fill: #4CAF50;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0.1, 2, 2);
 }
 
-/* Text-area log */
+.list-cell {
+    -fx-background-color: #3D3D3D;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+}
+
 .text-area {
-    -fx-control-inner-background: #434343;
-    -fx-background-radius: 6;
+    -fx-control-inner-background: #2D2D2D;
+    -fx-text-fill: white;
     -fx-font-family: "Consolas", monospace;
-    -fx-font-size: 13px;
+}
+
+.timer-label {
+    -fx-effect: null; /* Remove shadow effects */
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Force immediate rendering */
+.timer-label:update {
+    -fx-rotate: 0.0001; /* Forces layout recalculation */
 }

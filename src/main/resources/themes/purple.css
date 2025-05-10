@@ -1,36 +1,189 @@
-/* Root pane */
+/*────────────────────────────────────────────
+   Gen-Z “Neon Pastel” theme for Study Tracker
+   ──────────────────────────────────────────── 
+
+ ----- global palette ----- 
 .root {
-    -fx-font-family: "Segoe UI", sans-serif;
-    -fx-background-color: #c57afa;
+    primary & accent tokens we’ll reuse below 
+     JavaFX doesn’t support CSS variables yet, but we can at least centralise colours here 
+    -color-primary:       #ff7aa5;   /* flamingo pink  
+    -color-primary-dark:  #ff6587;
+    -color-primary-light: #ff8fba;
+    -color-purple:        #bb3ff0;   /* lavender 
+    -color-bg-dark:       #181818;   /* almost-black for dark mode 
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-base: #ffffff;               /* keeps default controls light 
+}
+ 
+/* ----- header strip (gradient glass) ----- 
+.header {
+    -fx-background-color: linear-gradient(to right, -color-purple, -color-primary);
+    -fx-padding: 12 20 12 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 6, 0.15, 0, 2);
 }
 
-/* Buttons */
+/* ----- generic button ----- 
 .button {
-    -fx-background-radius: 8;
-    -fx-background-color: linear-gradient(#bb3ff0, #ff747b);
+    -fx-background-color: linear-gradient(-color-primary-light, -color-primary-dark);
+    -fx-background-radius: 10;
+    -fx-border-radius:     10;
     -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 8 16;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 4, 0.1, 0, 1);
+    -fx-padding: 8 18;
+    -fx-alignment: CENTER;
+}
+.button:hover {
+    -fx-background-color: linear-gradient(-color-primary, -color-primary-dark);
+}
+.button:pressed {
+    -fx-background-color: linear-gradient(-color-primary-dark, -color-primary);
+    -fx-translate-y: 1; /* tactile press 
+}
+.button:disabled {
+    -fx-opacity: 0.35;
 }
 
-/* Timer label */
-.timer-label {
-    -fx-text-fill: #E1BEE7;
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
+/* icon-only buttons (+, ⚙) 
+.icon-btn {
+    -fx-shape: "M0 0H32V32H0Z";         /* square base – easier hit-test 
+    -fx-background-radius: 100;          /* perfect circle 
+    -fx-min-width:   40;
+    -fx-min-height:  40;
+    -fx-pref-width:  40;
+    -fx-pref-height: 40;
+    -fx-font-size:   18px;
+    -fx-padding:     0;
 }
 
-/* ListView cells for session log */
+/* danger variant (Stop) 
+.danger {
+    -fx-background-color: linear-gradient(#ff3c3c, #ff6363);
+}
+.danger:hover   { -fx-background-color: linear-gradient(#ff6363,#ff7c7c); }
+.danger:pressed { -fx-background-color: linear-gradient(#ff3c3c,#ff6363); }
+
+/* floating action button (FAB) 
+.fab {
+    -fx-background-color: linear-gradient(-color-primary-light, -color-primary);
+    -fx-background-radius: 100;     /* circle 
+    -fx-min-width:   64;
+    -fx-min-height:  64;
+    -fx-pref-width:  64;
+    -fx-pref-height: 64;
+    -fx-font-size: 28px;
+    -fx-font-weight: 700;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.30), 8, 0.2, 0, 4);
+}
+.fab:hover   { -fx-scale-x: 1.04; -fx-scale-y: 1.04; }
+.fab:pressed { -fx-scale-x: 0.96; -fx-scale-y: 0.96; -fx-translate-y: 2; }
+
+/* timer digits 
+.timer {
+    -fx-font-family: "JetBrains Mono", "Consolas", monospace;
+    -fx-font-size: 28px;
+    -fx-font-weight: 700;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 4, 0, 0, 1);
+}
+
+/* list containers 
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 6, 0.08, 0, 2);
+}
+
 .list-view {
     -fx-background-color: transparent;
-    -fx-background-radius: 6;
 }
 .list-cell {
-    -fx-font-family: "Segoe UI";
+    -fx-padding: 10 14 10 14;
     -fx-font-size: 14px;
-    -fx-text-fill: #333333;
-    -fx-padding: 8 12 8 12;
 }
 .list-cell:filled:selected, .list-cell:filled:hover {
-    -fx-background-color: #f0f0f0;
+    -fx-background-color: derive(-color-primary, 60%);
+}
+
+/* chart tweaks 
+.chart-plot-background {
+    -fx-background-color: #ffffff;
+}
+.chart-bar {
+    -fx-bar-fill: -color-primary;
+}
+.label {
+    -fx-text-fill: #333333;
+}*/
+
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-base: #2A0944;
+    -fx-accent: #3B185F;
+    -fx-default-button: #A12568;
+    -primary: #A12568;
+    -danger: #FEC260;
+    -fx-text-fill: #FFFFFF;
+}
+
+.card {
+    -fx-background-color: -fx-base;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0.1, 2, 2);
+    -fx-padding: 15;
+}
+
+.fab {
+    -fx-font-size: 24px;
+    -fx-min-width: 64px;
+    -fx-min-height: 64px;
+    -fx-background-radius: 32px;
+    -fx-background-color: -primary;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0.1, 2, 2);
+}
+
+.timer-label {
+    -fx-font-size: 64px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FEC260;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0.1, 2, 2);
+}
+
+.list-cell {
+    -fx-background-color: derive(-fx-base, 10%);
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+}
+
+.text-area {
+    -fx-control-inner-background: derive(-fx-base, 15%);
+    -fx-text-fill: white;
+    -fx-font-family: "Consolas", monospace;
+}
+
+/* Add to ALL themes (purple/light/dark.css) */
+.timer-label {
+    -fx-effect: null; /* Remove shadow effects */
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Force immediate rendering */
+.timer-label:update {
+    -fx-rotate: 0.0001; /* Forces layout recalculation */
+}
+
+/* In purple.css */
+.fab {
+    -fx-background-color: -primary;
+    -fx-text-fill: white;
+    /* Remove shadow effects */
+    -fx-effect: null;
+    /* Add subtle border instead */
+    -fx-border-color: derive(-primary, 20%);
+    -fx-border-width: 2px;
+    -fx-border-radius: 32px;
 }
