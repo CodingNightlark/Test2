@@ -11,10 +11,11 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
+import javafx.geometry.Insets; 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.*; 
+import javafx.scene.Node; 
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -24,7 +25,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Comparator; 
 import java.util.List;
 import java.util.prefs.Preferences;
 import java.time.format.DateTimeFormatter;
@@ -40,11 +41,11 @@ public class testUI extends Application {
     private final ObservableList<Subject> subjects = FXCollections.observableArrayList();
     private final ObservableList<StudySession> sessions = FXCollections.observableArrayList();
     private final ObservableList<String> logItems = FXCollections.observableArrayList();
-    
+     
     private Subject activeSubject;
     private StudySession currentSession;
     private GoalTracker goalTracker;
-    private AnimationTimer timer;
+    private AnimationTimer timer; 
     private SessionBarChart sessionChart;
     
     // UI Components
@@ -68,16 +69,23 @@ public class testUI extends Application {
     @Override
     public void start(Stage stage) {
         initializeData();
-        setupUI(stage);
+        setupUI(stage);  
         setupWindowCloseHandler(stage);
     }
-
+  
     private void initializeData() {
         currentTheme = Theme.valueOf(prefs.get("theme", Theme.PURPLE.name()));
         subjects.addAll(Storage.load());
         loadSessions();
+        Platform.runLater(() -> refreshSubjectCombo());
+        System.out.println("Loaded subjects: " + Storage.load()); // Temporary debug
+        // In loadSessions():
+System.out.println("First session subject: " + 
+    (sessions.isEmpty() ? "None" : sessions.get(0).getSubject()));
     }
 
+
+    // sets up the UI window overall
     private void setupUI(Stage stage) {
         VBox mainLayout = new VBox(createHeader(), createMainContent());
         mainScene = new Scene(mainLayout, 900, 700);
@@ -135,6 +143,8 @@ public class testUI extends Application {
         return createCard("Study Progress", sessionChart);
     }
 
+    // creates a floating action button, a circular button that floats above the UI for primary actions
+    // in this case, starting/stopping a study session
     private Button createFAB() {
         Button btn = new Button("▶");
         btn.getStyleClass().addAll("fab", "primary");
@@ -156,7 +166,9 @@ public class testUI extends Application {
     }
 
     private void toggleSession() {
-        if (currentSession == null) startSession();
+        if (currentSession == null) {
+        startSession();
+        }
         else stopSession();
     }
 
@@ -176,11 +188,16 @@ public class testUI extends Application {
             }
         };
         timer.start();
-        
+         
         fab.setText("⏹");
         fab.getStyleClass().add("danger");
         log("Session started for " + activeSubject.getName());
     }
+
+    // updates the timer label with the elapsed time
+    // this is called every frame by the AnimationTimer
+    // it uses JavaFX's Platform.runLater to ensure UI updates are on the JavaFX thread
+    // it also puts time into hours, minutes, and seconds
 
     private void updateTimer(long millis) {
         Platform.runLater(() -> {
@@ -193,6 +210,7 @@ public class testUI extends Application {
         });
     }
 
+    // stops the current session, updates the subject's total hours, and refreshes the UI
     private void stopSession() {
         if (timer != null) timer.stop();
         if (currentSession == null) return;
@@ -206,6 +224,7 @@ public class testUI extends Application {
         
         log(String.format("Session saved: %.2f hours", hours));
         log("Progress: " + goalTracker.getPercentComplete() + "% complete");
+        resetUIState();
         
         updateSessionList();
         saveSessions();
@@ -219,6 +238,7 @@ public class testUI extends Application {
         currentSession = null;
     }
 
+    // updates the dropdown list of subjects
     private void updateSessionList() {
         sessionsList.getItems().setAll(
             sessions.filtered(s -> s.getSubject().equals(activeSubject.getName()))
@@ -230,7 +250,7 @@ public class testUI extends Application {
         if (subject == null) return;
 
         goalTracker = new GoalTracker(subject, subject.getHoursPerWeek());
-        fab.setDisable(false);
+       // fab.setDisable(false);
         logItems.clear();
         
         List<StudySession> filtered = sessions.stream()
@@ -249,18 +269,25 @@ public class testUI extends Application {
         log("Progress: " + String.format("%.1f%%", goalTracker.getPercentComplete()));
     }
 
-    private void refreshSubjectCombo() {
-    // Sort subjects: those with history first, then by last session date (newest first)
+   private void refreshSubjectCombo() {
+    System.out.println("All subjects: " + subjects.stream().map(Subject::getName).toList());
+    System.out.println("All sessions: " + sessions.stream().map(StudySession::getSubject).toList());
+    
     subjects.sort(Comparator
-        .comparing((Subject s) -> !hasSessionHistory(s)) // Subjects WITHOUT history go last
-        .thenComparing(this::getLastSessionDate).reversed() // Most recent sessions first
+        .comparing((Subject s) -> !hasSessionHistory(s))
+        .thenComparing(this::getLastSessionDate).reversed()
     );
     
-    // Show ALL subjects in the dropdown (but sorted as above)
-    subjectCombo.getItems().setAll(subjects);
+    subjectCombo.getItems().setAll(subjects); // Show ALL subjects temporarily
+    System.out.println("Dropdown items: " + subjectCombo.getItems().stream().map(Subject::getName).toList());
 }
 
     private boolean hasSessionHistory(Subject s) {
+
+        boolean hasHistory = sessions.stream()
+        .anyMatch(sess -> sess.getSubject().equals(s.getName()));
+
+    
         return sessions.stream().anyMatch(sess -> sess.getSubject().equals(s.getName()));
     }
 
@@ -276,16 +303,9 @@ public class testUI extends Application {
         .orElse(LocalDateTime.MIN);
 }
 
-    // ... [Inner classes for list cells remain unchanged from previous version] ...
-    // ... [Storage methods (loadSessions, saveSessions) remain unchanged] ...
-    // ... [Dialog methods (showAddSubjectDialog, showSettingsDialog) remain unchanged] ...
-    // ... [Helper methods (createCard, log) remain unchanged] ...
-
     public static void main(String[] args) {
         launch(args);
-    }
-
-    // ================== INNER CLASSES ==================
+    } // runs it, why more later?
     
     private class SubjectListCell extends ListCell<Subject> {
         @Override
@@ -361,14 +381,17 @@ public class testUI extends Application {
 private void loadSessions() {
     try {
         if (Files.exists(SESSIONS_FILE)) {
+       
+
             String json = Files.readString(SESSIONS_FILE);
             List<StudySession> loaded = GSON.fromJson(json, 
                 new TypeToken<List<StudySession>>(){}.getType());
+    
             sessions.addAll(loaded);
         }
     } catch (IOException e) {
         log("Error loading sessions: " + e.getMessage());
-    }
+    } 
 }
 
 private void saveSessions() {
@@ -431,6 +454,7 @@ private void showAddSubjectDialog() {
         grid.setVgap(10);
         grid.setPadding(new Insets(20));
         
+        
         TextField nameField = new TextField();
         nameField.setPromptText("Subject name");
         TextField targetField = new TextField();
@@ -441,6 +465,34 @@ private void showAddSubjectDialog() {
         dialog.getDialogPane().setContent(grid);
         dialog.getDialogPane().getStylesheets().addAll(mainScene.getStylesheets());
         
+         Node okButton = dialog.getDialogPane().lookupButton(ButtonType.OK);
+    okButton.setDisable(true);
+
+    // Validate input fields
+    nameField.textProperty().addListener((observable, oldValue, newValue) -> {
+        okButton.setDisable(newValue.trim().isEmpty() || targetField.getText().trim().isEmpty());
+    });
+
+    targetField.textProperty().addListener((observable, oldValue, newValue) -> {
+        okButton.setDisable(newValue.trim().isEmpty() || nameField.getText().trim().isEmpty());
+    });
+
+    // Press Enter in subjectNameField to move focus to hoursPerWeekField
+    nameField.setOnAction(event -> targetField.requestFocus());
+
+    // Press Enter in hoursPerWeekField to submit the dialog
+    targetField.setOnAction(event -> {
+        if (!okButton.isDisabled()) {
+            dialog.setResult(new Subject(
+                nameField.getText().trim(),
+                0.0,
+                Integer.parseInt(targetField.getText().trim()),
+                new ArrayList<>()
+            ));
+            dialog.close();
+        }
+    });
+
         dialog.setResultConverter(btn -> {
             if (btn == ButtonType.OK) {
                 try {

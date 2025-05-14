@@ -21,11 +21,11 @@ public class GoalTracker {
         return Math.min(100, (subject.getTotalHours() / targetHours) * 100);
     }
 
-    public void displayProgress() {
-        System.out.printf("Progress toward goal for %s:%n", subject.getName());
-        System.out.printf("  Total studied: %.2f hours%n", subject.getTotalHours());
-        System.out.printf("  Target: %.2f hours%n", targetHours);
-        System.out.printf("  Remaining: %.2f hours%n", getHoursRemaining());
-        System.out.printf("  Completion: %.1f%%%n", getPercentComplete());
-    }
+ public void displayProgress() {
+    System.out.println("Progress toward goal for " + subject.getName() + ":");
+    System.out.println("  Total studied: " + subject.getTotalHours() + " hours");
+    System.out.println("  Target: " + targetHours + " hours");
+    System.out.println("  Remaining: " + getHoursRemaining() + " hours");
+    System.out.println("  Completion: " + getPercentComplete() + "%");
+}
 } 
